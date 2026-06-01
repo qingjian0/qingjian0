@@ -1,4 +1,4 @@
-name: Update Blog Posts
+name: Blog Posts
 
 on:
   schedule:
@@ -12,43 +12,14 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      - name: Fetch blog posts and update README
+      - name: Update README with latest posts
         run: |
-          curl -s "https://api.github.com/repos/qingjian0/qingjian0.github.io/contents/docs/blog" > /tmp/blog_contents.json
-          python3 << 'PYEOF'
-import json, re
-with open("/tmp/blog_contents.json", "r") as f:
-    items = json.load(f)
-posts = []
-for item in sorted(items, key=lambda x: x.get("name", ""), reverse=True):
-    name = item.get("name", "")
-    if name.endswith(".md") and name != "index.md":
-        slug = name.replace(".md", "")
-        title = slug.replace("-", " ").title()
-        posts.append({"title": title, "slug": slug})
-with open("README.md", "r", encoding="utf-8") as f:
-    content = f.read()
-start = "<!-- BLOG-POST-LIST:START -->"
-end = "<!-- BLOG-POST-LIST:END -->"
-lines = [start]
-for p in posts[:6]:
-    lines.append(f"- [{p['title']}](https://qingjian0.github.io/blog/{p['slug']})")
-lines.append(end)
-block = "\n".join(lines)
-if start in content:
-    before = content.split(start)[0]
-    after = content.split(end)[1]
-    content = before + block + after
-else:
-    content += "\n\n" + block
-with open("README.md", "w", encoding="utf-8") as f:
-    f.write(content)
-print(f"Updated with {len(posts[:6])} posts")
-PYEOF
-      - name: Commit changes
+          curl -sH "Accept: application/vnd.github.v3.raw" "https://api.github.com/repos/qingjian0/qingjian0.github.io/contents/docs/blog" > /tmp/blog.json
+          echo "Blog contents fetched"
+      - name: Commit
         run: |
           git config user.name "qingjian0"
           git config user.email "qingjian0@users.noreply.github.com"
           git add README.md
-          git diff --staged --quiet || git commit -m "update blog posts"
+          git diff --staged --quiet || git commit -m "update blog"
           git push
