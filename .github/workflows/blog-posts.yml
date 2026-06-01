@@ -1,0 +1,78 @@
+name: Update Blog Posts in README
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+  repository_dispatch:
+    types: [blog-update]
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pull blog repo
+        run: |
+          git clone --depth 1 https://github.com/qingjian0/qingjian0.github.io.git blog_repo
+      - name: Extract blog posts
+        run: |
+          python -c "
+import os, re, json
+
+posts = []
+blog_dir = 'blog_repo/docs/blog'
+for f in sorted(os.listdir(blog_dir), reverse=True):
+    if f.endswith('.md') and f != 'index.md':
+        path = os.path.join(blog_dir, f)
+        with open(path, 'r', encoding='utf-8') as fh:
+            content = fh.read()
+        title_match = re.search(r'^#\s+(.+)', content)
+        title = title_match.group(1) if title_match else f.replace('.md','')
+        posts.append({'title': title, 'slug': f.replace('.md','')})
+
+with open('blog_posts.json', 'w', encoding='utf-8') as fh:
+    json.dump(posts[:8], fh, ensure_ascii=False, indent=2)
+print(f'Extracted {len(posts)} posts')
+          "
+      - name: Update README
+        run: |
+          python -c "
+import json
+with open('blog_posts.json', 'r', encoding='utf-8') as f:
+    posts = json.load(f)
+
+lines = []
+lines.append('<!-- BLOG-POST-LIST:START -->')
+for p in posts:
+    slug = p["slug"]
+    title = p["title"]
+    lines.append(f"- [{title}](https://qingjian0.github.io/blog/{slug})")
+lines.append('<!-- BLOG-POST-LIST:END -->')
+
+with open('README.md', 'r', encoding='utf-8') as f:
+    content = f.read()
+
+start_marker = '<!-- BLOG-POST-LIST:START -->'
+end_marker = '<!-- BLOG-POST-LIST:END -->'
+
+if start_marker in content:
+    before = content.split(start_marker)[0]
+    after = content.split(end_marker)[1] if end_marker in content else ''
+    new_content = before + '\n'.join(lines) + '\n' + after
+else:
+    new_content = content + '\n\n' + '\n'.join(lines)
+
+with open('README.md', 'w', encoding='utf-8') as f:
+    f.write(new_content)
+print('README updated with blog posts')
+          "
+      - name: Commit changes
+        run: |
+          git config user.name 'qingjian0'
+          git config user.email 'qingjian0@users.noreply.github.com'
+          git add README.md blog_posts.json
+          git diff --staged --quiet || git commit -m 'update blog posts in README'
+          git push
