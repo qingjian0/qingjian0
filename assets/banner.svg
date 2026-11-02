@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" width="1200" height="300" role="img" aria-label="清简 QINGJIAN · AI Agent Engineer">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#121110"/>
+      <stop offset="46%" stop-color="#1A1D1B"/>
+      <stop offset="100%" stop-color="#29453F"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="84%" cy="30%" r="48%">
+      <stop offset="0%" stop-color="#4A7C6F" stop-opacity="0.40"/>
+      <stop offset="100%" stop-color="#4A7C6F" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="title" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#F8F5ED"/>
+      <stop offset="100%" stop-color="#CCC6B7"/>
+    </linearGradient>
+    <linearGradient id="rule" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#4A7C6F" stop-opacity="0.65"/>
+      <stop offset="55%" stop-color="#C9A227" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="#C9A227" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="300" fill="url(#bg)"/>
+  <rect width="1200" height="300" fill="url(#halo)"/>
+
+  <!-- 圆相 -->
+  <circle cx="1006" cy="118" r="92" fill="none" stroke="#4A7C6F" stroke-opacity="0.26" stroke-width="1.4"/>
+  <circle cx="1006" cy="118" r="60" fill="none" stroke="#4A7C6F" stroke-opacity="0.15" stroke-width="1"/>
+  <circle cx="1006" cy="118" r="6" fill="#B23A2E" fill-opacity="0.55"/>
+
+  <!-- 六爻 -->
+  <g fill="#C9A227" fill-opacity="0.50">
+    <rect x="880" y="196" width="122" height="5" rx="2.5"/>
+    <rect x="880" y="214" width="53" height="5" rx="2.5"/>
+    <rect x="949" y="214" width="53" height="5" rx="2.5"/>
+    <rect x="880" y="232" width="122" height="5" rx="2.5"/>
+    <rect x="880" y="250" width="53" height="5" rx="2.5"/>
+    <rect x="949" y="250" width="53" height="5" rx="2.5"/>
+  </g>
+
+  <!-- 朱砂竖条 -->
+  <rect x="66" y="82" width="4" height="126" rx="2" fill="#B23A2E"/>
+
+  <!-- 文字 -->
+  <text x="94" y="146" font-family="'Noto Serif SC','Songti SC','STSong','Source Han Serif SC',serif" font-size="78" font-weight="600" fill="url(#title)" letter-spacing="10">清简</text>
+  <text x="98" y="186" font-family="'JetBrains Mono',ui-monospace,'SFMono-Regular',monospace" font-size="15" fill="#7E9A93" letter-spacing="5">QINGJIAN</text>
+  <text x="98" y="212" font-family="'JetBrains Mono',ui-monospace,'SFMono-Regular',monospace" font-size="12.5" fill="#5E736D" letter-spacing="2.6">AI AGENT ENGINEER · PROMPT ARCHITECT</text>
+
+  <!-- 底部细线 -->
+  <rect x="66" y="272" width="1068" height="1" fill="url(#rule)"/>
+</svg>
